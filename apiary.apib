@@ -1,0 +1,216 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# DAPI
+
+Develop powerful fintech apps using our financial API.
+
+DAPI is the first financial API in MENA that lets fintech apps leverage open banking by initiating payments and accessing real-time banking data.
+
+In this page, we have provided examples of the actions that the client may use with the Dpai API. In each action, the required parameters for each request have been defined.  
+
+
+#Client Dashboard [/dapiV1/client_dashboard]
+
+
+### Client Login [POST]
+
+Client may also login using the `session_token` if it has been provided from a previous login. Otherwise, logging in using the `email` and `password` is required. 
+
++ Request (application/json)
+
+            {
+                "email": "amir@dapi.co",
+                "password": "gghhagsg!22@S"
+            }
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "session_token":"eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ",
+               "msg":"successful"
+            }
+
+
+### Client Logout [POST]
+
+??
+
+### Client Add APP [POST]
+
+As shown above, the client can also add an application by providing the `session_token` and `app_name` parameters in the body of the request.
+
++ Request (application/json)
+
+            {
+                "session_token":"eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ",
+                "app_name":"Zomato"
+            }
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "session_token":"eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ",
+               "status":"successful"
+            }
+
+### Client Update APP [POST]
+
+The client may also update the `app_details` using the specified parameters shown above.
+
++ Request (application/json)
+
+
+            {
+                "app_id":"1278q1a2d",
+                "app_detalis": {
+                    "app_name":"Zomato"
+                }
+            }
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "status":"successful"
+            }
+            
+#Client User DapiConnect [/dapiV1/DapiConnect]
+
+### User Login [POST]
+
++ Request (application/json)
+
+        
+            {
+                "app_id":"1278q1a2d",
+                "username":"amir_dapi",
+                "password":"athjk129896!@",
+                "bank_code":"ENBD",
+                "CallBack_url":"/api.example.com/foo?callbackURL=http://my.server.com/bar"
+            }
+        
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "access_code":"678476547",
+                "CallBack_url":"/api.example.com/foo?callbackURL=http://my.server.com/bar"
+            }
+
+
+
+#CLient Server [/dapiV1/ClientServer]
+
+Once any job is requested, the client will recieve a `job_id` which refers to that "job". After that "job" is done, the client will be updated about the job status via **Webhooks**.
+
+###Exchange code to Access Token [POST]
++ Request (application/json)
+
+        
+            {
+                "access_code":"hs7sg67754",
+                "client_secret":"b876dsdgvc76sdct567"
+                
+            }
+        
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "access_token":"678476547"
+            }
+
+###Retrieve Transactions [POST]
+
++ Request (application/json)
+
+        
+            {
+                "access_token":"hs7sg67754",
+                "app_secret":"jhg67884654ffdc45szw43wsfv7"
+            }
+        
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "job_id":"9865663435567894332"
+            }
+
+###Initiate Payment [POST]
+
++ Request (application/json)
+
+        
+            {
+                "access_token":"hs7sg67754",
+                "app_secret":"jhg67884654ffdc45szw43wsfv7",
+                "Payment_information": {
+                    "Beneficiary":"amressam",
+                    "Amount":"300.0",
+                }
+            }
+        
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "job_id":"9865663435567894332"
+            }
+
+###Resume Payment [POST]
+
+
++ Request (application/json)
+
+            {
+                "access_token":"hs7sg67754",
+                "app_secret":"jhg67884654ffdc45szw43wsfv7",
+                "job_id":"9865663435567894332",
+                "Supplementary_information": {
+                    "OTP":"5845"
+                }
+            }
+
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "job_id":"9865663435567894332"
+            }
+
+###View User Information [POST]
+
++ Request (application/json)
+
+            { 
+                "Client_KEY": "abcdef",
+                "Username": "user_good",
+                "Password": "pass_good",
+                "Bank_ID": "enbd",
+                "JobQueue": ["kyc"]
+            }
+
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "JobID": "GAMcyvToC",
+            }
